@@ -120,7 +120,8 @@ class NFA:
 			s = State(key)
 			for c in alphabet:
 				print('Ir_a({},{}) = '.format(s,c),end = '')
-				if self.go_to(powersets[key],c) not in powersets.values():				
+				z = self.go_to(powersets[key],c)
+				if z not in powersets.values():				
 					name = str(v_names.pop())
 					newS = State(name)
 					#print('{} = {}'.format(self.go_to(powersets[key],c),newS))		
