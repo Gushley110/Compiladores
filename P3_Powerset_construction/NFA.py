@@ -199,12 +199,14 @@ class NFA:
 		print('-' * line_size)
 
 		for s in self.states:
-			if s == self.init_st:
-				print('\t->{}\t |'.format(s),end = '') 
+			if s == self.init_st and s in self.acc_states:
+				print('\t->*{}\t |'.format(s),end = '')
+			elif s == self.init_st:
+				print('\t-> {}\t |'.format(s),end = '')
 			elif s in self.acc_states:
-				print('\t* {}\t |'.format(s),end = '')
+				print('\t * {}\t |'.format(s),end = '')
 			else:
-				print('\t  {}\t |'.format(s),end = '')
+				print('\t   {}\t |'.format(s),end = '')
 			for c in self.alphabet:					
 				if len(s.getNextStates(c)) == 2:
 					print('   {}   |'.format(s.getNextStates(c)),end = '')
