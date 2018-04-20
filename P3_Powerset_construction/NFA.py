@@ -9,6 +9,7 @@ class NFA:
 		constructor(states,alphabet,init_st,acc_states): 
 		print_states(): prints all transitions from all states
 		add_state(): adds a state to states set
+		accepts(test): prints the paths in which a string [test] ends in a acceptance state
 
     Data attributes:
        init_st: State, initial state

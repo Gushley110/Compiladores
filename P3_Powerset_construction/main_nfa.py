@@ -63,7 +63,7 @@ def fNFA(file_name):
 
 def main():
 
-	file_name = input('Name of the file:B \n')
+	file_name = input('Name of the file :B \n')
 
 	nfa = fNFA(file_name)
 
