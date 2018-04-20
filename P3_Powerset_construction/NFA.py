@@ -110,6 +110,7 @@ class NFA:
 		stack = [first_v]
 		init_st = State(first_v)
 		states = set()
+		acc_st = set()
 
 		states.add(init_st)
 		
@@ -119,23 +120,49 @@ class NFA:
 			key = stack.pop()
 			s = State(key)
 			for c in alphabet:
-				print('Ir_a({},{}) = '.format(s,c),end = '')
 				z = self.go_to(powersets[key],c)
-				if z not in powersets.values():				
-					name = str(v_names.pop())
-					newS = State(name)
-					#print('{} = {}'.format(self.go_to(powersets[key],c),newS))		
-					powersets[name] = self.go_to(powersets[key],c)
-					print('{}({})->{}'.format(s,c,newS))
-					s.add_transition(newS,c)
-					states.add(newS)
-					stack.append(name)
+
+				if z not in powersets.values():
+					new_s_name = v_names.pop()
+					new_st = State(new_s_name)
+					powersets[new_s_name] = z
+
+					s.add_transition(new_st, c)
+					#s.print_transitions()
+
+					states.remove(s)
+					states.add(s)
+					states.add(new_st)
+					stack.append(new_s_name)
+
+				elif z in powersets.values() and z != set():
+					sets = list(powersets.values())
+					keys = list(powersets.keys())
+					i = sets.index(z)
+					s.add_transition(State(keys[i]), c)
+					states.remove(s)
+					states.add(s)
+					print('--')
+
+		sets = list(powersets.values())
+		keys = list(powersets.values())
+
+		for ac_st in self.acc_states:
+			for key,value in powersets.items():
+				if ac_st in value:
+					acc_st.add(State(key))
+
 
 		for s in states:
 			s.print_transitions()
 
-		return powersets
+		for s in acc_st:
+			print(s)
 
+		newnfa = self.__init__(states,alphabet,init_st,acc_st)
+		
+
+		return newnfa
 
 	def move_to(self,states,sym):
 		
@@ -170,7 +197,7 @@ class NFA:
 
 		print("\t\u03B4\t |",end = '')
 
-		for sym in alphabet:
+		for sym in self.alphabet:
 			print('\t{}\t|'.format(sym),end = '')
 			line_size += len('\t{}\t|'.expandtabs())
 		print()
@@ -184,7 +211,7 @@ class NFA:
 				print('\t* {}\t |'.format(s),end = '')
 			else:
 				print('\t  {}\t |'.format(s),end = '')
-			for c in alphabet:					
+			for c in self.alphabet:					
 				if len(s.getNextStates(c)) == 2:
 					print('   {}   |'.format(s.getNextStates(c)),end = '')
 				elif len(s.getNextStates(c)) == 3:
