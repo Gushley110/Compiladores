@@ -67,7 +67,11 @@ def main():
 
 	nfa = fNFA(file_name)
 
-	print(nfa.powerset())
+	newnfa = nfa.powerset()
+
+	newnfa = NFA(newnfa[0],newnfa[1],newnfa[2],newnfa[3])
+
+	newnfa.print_transition_table()
 
 if __name__ == "__main__":
     main()

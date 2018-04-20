@@ -122,7 +122,7 @@ class NFA:
 			for c in alphabet:
 				z = self.go_to(powersets[key],c)
 
-				if z not in powersets.values():
+				if z not in powersets.values() and z!= set():
 					new_s_name = v_names.pop()
 					new_st = State(new_s_name)
 					powersets[new_s_name] = z
@@ -142,7 +142,6 @@ class NFA:
 					s.add_transition(State(keys[i]), c)
 					states.remove(s)
 					states.add(s)
-					print('--')
 
 		sets = list(powersets.values())
 		keys = list(powersets.values())
@@ -153,16 +152,10 @@ class NFA:
 					acc_st.add(State(key))
 
 
-		for s in states:
-			s.print_transitions()
-
-		for s in acc_st:
-			print(s)
-
-		newnfa = self.__init__(states,alphabet,init_st,acc_st)
+		for key, value in powersets.items():
+			print('q{} = {}'.format(key,value))
 		
-
-		return newnfa
+		return [states,alphabet,init_st,acc_st]
 
 	def move_to(self,states,sym):
 		
