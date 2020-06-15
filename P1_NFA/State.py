@@ -58,6 +58,13 @@ class State:
 		for t in self.transitions:
 			print('{}{}'.format(self.id_state,t))
 
+	def get_transition_symbols(self):
+		symbols = []
+		for t in self.transitions:
+			symbols.append(t.sym)
+
+		return symbols
+
 if __name__ == "__main__":
     s1 = State(0)
     s2 = State(1)
